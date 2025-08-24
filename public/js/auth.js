@@ -62,11 +62,10 @@ async function login() {
     });
     
     console.log('Response status:', res.status);
-    const data = await res.json();
-    
+    const data = await res.json(); // Cek kalau respons bukan JSON
     if (!res.ok) {
       console.log('Response error:', data);
-      throw new Error(data.error || 'Login gagal, cek email atau password');
+      throw new Error(data.error || 'Login gagal');
     }
 
     localStorage.setItem('token', data.token);
@@ -77,7 +76,11 @@ async function login() {
     window.location.href = 'dashboard.html';
   } catch (error) {
     console.error('Login fetch error:', error.message);
-    showToast(error.message, 'error');
+    if (error.message.includes('Unexpected token')) {
+      showToast('Server mengembalikan data tidak valid', 'error');
+    } else {
+      showToast(error.message, 'error');
+    }
   }
 }
 
@@ -101,8 +104,7 @@ async function register() {
     });
     
     console.log('Response status:', res.status);
-    const data = await res.json();
-    
+    const data = await res.json(); // Cek kalau respons bukan JSON
     if (!res.ok) {
       console.log('Response error:', data);
       throw new Error(data.error || 'Pendaftaran gagal');
@@ -116,7 +118,11 @@ async function register() {
     window.location.href = 'dashboard.html';
   } catch (error) {
     console.error('Register fetch error:', error.message);
-    showToast(error.message, 'error');
+    if (error.message.includes('Unexpected token')) {
+      showToast('Server mengembalikan data tidak valid', 'error');
+    } else {
+      showToast(error.message, 'error');
+    }
   }
 }
 
@@ -155,7 +161,6 @@ async function refreshToken() {
     });
     
     const data = await res.json();
-    
     if (!res.ok) {
       console.log('Refresh token error:', data);
       throw new Error(data.error || 'Gagal refresh token');
