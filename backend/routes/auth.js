@@ -3,11 +3,11 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Register (daftar)
+// Register
 router.post('/register', async (req, res) => {
   const { email, password, family_code } = req.body;
+  console.log('Register attempt:', { email });
   try {
-    console.log('Register attempt:', { email });
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ error: 'User already exists' });
 
@@ -32,22 +32,29 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  console.log('Login attempt:', { email, headers: req.headers });
   try {
-    console.log('Login attempt:', { email });
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: 'User not found' });
+    if (!user) {
+      console.log('User not found:', email);
+      return res.status(400).json({ error: 'User not found' });
+    }
 
     const isMatch = await user.comparePassword(password);
-    if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
+    if (!isMatch) {
+      console.log('Invalid credentials for:', email);
+      return res.status(400).json({ error: 'Invalid credentials' });
+    }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
+    console.log('Login success:', email);
     res.json({
       token,
       refreshToken,
       email: user.email,
-      family_code: user.family_code
+      family_code: user.family_code || ''
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -58,8 +65,8 @@ router.post('/login', async (req, res) => {
 // Refresh Token
 router.post('/refresh-token', async (req, res) => {
   const { refreshToken } = req.body;
+  console.log('Refresh token attempt');
   try {
-    console.log('Refresh token attempt');
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
     const token = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
@@ -69,7 +76,7 @@ router.post('/refresh-token', async (req, res) => {
   }
 });
 
-// Logout (opsional, invalidate token di client-side)
+// Logout
 router.post('/logout', (req, res) => {
   console.log('Logout attempt');
   res.json({ message: 'Logged out successfully' });
