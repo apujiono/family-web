@@ -1,18 +1,15 @@
 {
   "name": "family-web-backend",
   "version": "1.0.0",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.0.0",
-    "bcrypt": "^5.1.0",
-    "jsonwebtoken": "^9.0.0",
-    "socket.io": "^4.5.0",
-    "helmet": "^6.0.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "mongodb": "^5.0.0",
-    "zlib": "^1.0.5"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.1"
   }
 }
