@@ -6,8 +6,12 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   const { email, password, family_code } = req.body;
-  console.log('Register attempt:', { email });
+  console.log('Register attempt:', { email, body: req.body });
   try {
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email dan password wajib diisi' });
+    }
+
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ error: 'User already exists' });
 
@@ -17,6 +21,7 @@ router.post('/register', async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
+    console.log('Register success:', email);
     res.json({
       token,
       refreshToken,
@@ -34,6 +39,10 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   console.log('Login attempt:', { email, headers: req.headers });
   try {
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email dan password wajib diisi' });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       console.log('User not found:', email);
