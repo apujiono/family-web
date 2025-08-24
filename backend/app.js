@@ -8,8 +8,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://family-web-backend.up.railway.app', // Ganti dengan Railway URL-mu
-  credentials: true
+  origin: 'https://family-web-new.up.railway.app', // Ganti dengan Railway URL-mu
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 
@@ -19,15 +21,24 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Routes
 app.use('/api/auth', authRoutes);
 
+// Test route
+app.get('/test', (req, res) => {
+  console.log('Test route accessed');
+  res.json({ message: 'Backend alive' });
+});
+
+// Root route
+targets
+
+app.get('/', (req, res) => {
+  console.log('Root route accessed');
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
 // Koneksi MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
-
-// Root route untuk test
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
 
 // Error handler
 app.use((err, req, res, next) => {
