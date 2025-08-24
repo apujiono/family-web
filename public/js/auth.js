@@ -1,23 +1,19 @@
-// public/js/auth.js
-const API_URL = 'https://family-web-backend.up.railway.app';
+const API_URL = 'https://family-web-backend.up.railway.app/api/auth'; // Endpoint base
 
-// Tunggu DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   const loginButton = document.getElementById('loginButton');
   const loginForm = document.getElementById('loginForm');
 
   if (loginButton && loginForm) {
-    // Enable tombol kalau input valid
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     
     [emailInput, passwordInput].forEach(input => {
       input.addEventListener('input', () => {
-        loginButton.disabled = !(emailInput.value && passwordInput.value);
+        loginButton.disabled = !(emailInput.value.trim() && passwordInput.value);
       });
     });
 
-    // Event listener untuk form submit
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       await login();
@@ -27,19 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Fungsi login
 async function login() {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   
-  // Validasi input
   if (!email || !password) {
     showToast('Email dan password harus diisi', 'error');
     return;
   }
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/login`, {
+    const res = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -51,16 +45,12 @@ async function login() {
       throw new Error(data.error || 'Login gagal, cek email atau password');
     }
 
-    // Simpan data ke localStorage
     localStorage.setItem('token', data.token);
     localStorage.setItem('refreshToken', data.refreshToken);
     localStorage.setItem('currentUser', data.email);
     localStorage.setItem('family_code', data.family_code);
     
-    // Track event Google Analytics
     queueGtagEvent('login_success', { event_category: 'auth', event_label: 'login' });
-    
-    // Redirect ke dashboard
     window.location.href = 'dashboard.html';
   } catch (error) {
     console.error('Login error:', error.message);
@@ -68,11 +58,9 @@ async function login() {
   }
 }
 
-// Fungsi logout
 async function logout() {
   try {
-    // Opsional: Kirim request ke backend untuk invalidate token
-    await fetch(`${API_URL}/api/auth/logout`, {
+    await fetch(`${API_URL}/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,13 +71,11 @@ async function logout() {
     console.error('Logout error:', error.message);
   }
   
-  // Clear localStorage
   localStorage.clear();
   queueGtagEvent('logout', { event_category: 'auth', event_label: 'logout' });
   window.location.href = 'index.html';
 }
 
-// Fungsi refresh token
 async function refreshToken() {
   const refreshToken = localStorage.getItem('refreshToken');
   if (!refreshToken) {
@@ -99,7 +85,7 @@ async function refreshToken() {
   }
 
   try {
-    const res = await fetch(`${API_URL}/api/auth/refresh-token`, {
+    const res = await fetch(`${API_URL}/refresh-token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refreshToken })
@@ -121,7 +107,6 @@ async function refreshToken() {
   }
 }
 
-// Fungsi toast untuk feedback
 function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
@@ -150,7 +135,6 @@ function showToast(message, type = 'info') {
   }, 3000);
 }
 
-// Fungsi dummy queueGtagEvent (sesuaikan kalau pake gtag asli)
 function queueGtagEvent(eventName, params) {
   if (typeof gtag === 'function') {
     gtag('event', eventName, params);
