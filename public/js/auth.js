@@ -1,4 +1,4 @@
-const API_URL = 'https://family-web-new.up.railway.app/api/auth';
+const API_URL = 'https://family-web-production.up.railway.app/api/auth';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Login form
