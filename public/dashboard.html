@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Family Web</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <p>Selamat datang, <span id="currentUser"></span></p>
+    <p>Kode Keluarga: <span id="familyCode"></span></p>
+    <button onclick="logout()">Logout</button>
+  </div>
+  <script src="js/auth.js"></script>
+  <script>
+    document.getElementById('currentUser').textContent = localStorage.getItem('currentUser') || 'User';
+    document.getElementById('familyCode').textContent = localStorage.getItem('family_code') || 'Tidak ada';
+  </script>
+</body>
+</html>
