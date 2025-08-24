@@ -38,10 +38,12 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Error handler
+// Error handler yang lebih spesifik
 app.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  res.status(500).json({ error: 'Internal server error' });
+  console.error('Server error:', err.stack);
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
