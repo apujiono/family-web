@@ -13,7 +13,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = socketIo(server, { 
   cors: { 
-    origin: 'https://apujiono.github.io', // Ganti dengan URL GitHub Pages Anda
+    origin: 'https://apujiono.github.io/family-web/', // Ganti dengan URL GitHub Pages Anda
     methods: ['GET', 'POST']
   },
   transports: ['websocket', 'polling'],
@@ -22,7 +22,7 @@ const io = socketIo(server, {
   reconnectionDelay: 1000
 });
 
-app.use(cors({ origin: 'https://apujiono.github.io' })); // Ganti dengan URL GitHub Pages
+app.use(cors({ origin: 'https://apujiono.github.io/family-web/' })); // Ganti dengan URL GitHub Pages
 app.use(express.json());
 app.use(helmet());
 app.use(express.static('public'));
