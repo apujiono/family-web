@@ -1,0 +1,60 @@
+:root {
+  --bg-color: #001F3F;
+  --text-color: #00FFFF;
+}
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: Roboto, sans-serif;
+}
+body.dark-mode {
+  --bg-color: #1C2526;
+  --text-color: #FFFFFF;
+}
+body.accessibility {
+  --bg-color: #000000;
+  --text-color: #FFFFFF;
+  font-size: 1.5em;
+}
+body.neon-pink { --bg-color: #1A001A; --text-color: #FF69B4; }
+body.neon-green { --bg-color: #002A00; --text-color: #00FF00; }
+input, button, select, textarea {
+  background: #00FFFF;
+  color: #001F3F;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background: #00FFFF;
+  color: #001F3F;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  animation: fadeIn 0.5s;
+}
+.tooltip:hover .tooltiptext { visibility: visible; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+#callContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#localVideo, #remoteVideos video {
+  width: 100%;
+  max-width: 300px;
+  border: 2px solid #00FFFF;
+}
+#photoGallery img {
+  width: 100px;
+  margin: 5px;
+}
+#familyTree svg {
+  width: 100%;
+  max-width: 800px;
+}
