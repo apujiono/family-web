@@ -8,7 +8,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://family-web.up.railway.app', // Ganti dengan Railway URL-mu
+  origin: 'https://family-web-production.up.railway.app',
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -28,8 +28,6 @@ app.get('/test', (req, res) => {
 });
 
 // Root route
-targets
-
 app.get('/', (req, res) => {
   console.log('Root route accessed');
   res.sendFile(path.join(__dirname, '../public/index.html'));
