@@ -1,5 +1,5 @@
 // URL backend (ganti dengan URL Railway Anda setelah deploy)
-const API_URL = 'https://family-web-backend.up.railway.app';
+const API_URL = 'family-web-production.up.railway.app';
 
 // Inisialisasi Socket.io untuk signaling
 const socket = io(API_URL, {
