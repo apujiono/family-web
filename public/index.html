@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Web - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <script src="https://cdn.jsdelivr.net/npm/i18next@22.0.0/dist/umd/i18next.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+</head>
+<body>
+  <h1 data-i18n="login_title">Masuk ke Family Web</h1>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Masuk</button>
+  <a href="register.html">Daftar</a>
+  <div id="onboardingQuiz" style="display: none;">
+    <h2>Kuis: Kenal Family Web</h2>
+    <p>Pilih fitur untuk kirim pesan:</p>
+    <button onclick="checkQuiz('chat')">Chat</button>
+    <button onclick="checkQuiz('photo')">Foto</button>
+  </div>
+  <script src="js/auth.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/i18n.js"></script>
+</body>
+</html>
